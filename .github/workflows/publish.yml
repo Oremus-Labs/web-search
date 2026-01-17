@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -27,6 +27,17 @@ jobs:
 
       - name: Install
         run: npm ci
+
+      - name: Pack tarball (no-token install)
+        run: |
+          npm pack --silent
+          mv oremus-labs-web-search-mcp-*.tgz web-search-mcp.tgz
+
+      - name: Create GitHub Release + upload tarball
+        uses: softprops/action-gh-release@v2
+        with:
+          files: web-search-mcp.tgz
+          generate_release_notes: true
 
       - name: Publish
         env:

@@ -23,6 +23,12 @@ This avoids GitHub Packages auth requirements and “just works” with `npx`:
 ```bash
 SEARXNG_URL="https://search.oremuslabs.app" \\
 TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
+npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz
+```
+
+If you want a pinned version, use the versioned asset under the tag, e.g.:
+
+```bash
 npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz
 ```
 
@@ -122,7 +128,7 @@ Add a server entry to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.web_search]
 command = "npx"
-args = ["-y", "https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz"]
+args = ["-y", "https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz"]
 env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "https://trafilatura.oremuslabs.app/mcp" }
 startup_timeout_sec = 30
 tool_timeout_sec = 120
@@ -141,7 +147,7 @@ Add a server entry to your Claude Code MCP config (commonly `.mcp.json` in your 
       "command": "npx",
       "args": [
         "-y",
-        "https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz"
+        "https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz"
       ],
       "env": {
         "SEARXNG_URL": "https://search.oremuslabs.app",
