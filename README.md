@@ -8,6 +8,13 @@ An MCP server that exposes:
 
 This is designed to be run with `npx` as an MCP server (stdio transport).
 
+## Client setup (Codex / Claude / others)
+
+- Codex CLI: see “Use in Codex CLI” below.
+- Claude Code: see `web-search-mcp/CLAUDE.md:1` or copy `web-search-mcp/.mcp.json.example:1` to your project as `.mcp.json`.
+- Copilot instructions: see `web-search-mcp/.github/copilot-instructions.md:1`.
+- Gemini instructions: see `web-search-mcp/GEMINI.md:1`.
+
 ## Why this exists
 
 - SearXNG is great for finding URLs.

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "web-search": {
+      "command": "npx",
+      "args": ["-y", "oremus-web-search"],
+      "env": {
+        "SEARXNG_URL": "https://search.oremuslabs.app",
+        "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
+      }
+    }
+  }
+}
+
