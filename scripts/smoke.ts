@@ -19,7 +19,11 @@ async function main() {
 
   const tools = await client.listTools();
   const toolNames = tools.tools.map((t) => t.name).sort();
-  if (!toolNames.includes("web_search") || !toolNames.includes("fetch_and_extract")) {
+  if (
+    !toolNames.includes("web_search") ||
+    !toolNames.includes("fetch_and_extract") ||
+    !toolNames.includes("rotate_vpn")
+  ) {
     throw new Error(`Unexpected tools: ${toolNames.join(", ")}`);
   }
 

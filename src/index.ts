@@ -14,8 +14,10 @@ import { StreamableHttpMcpClient } from "./streamableHttpMcpClient.js";
 import { webSearch } from "./searxng.js";
 import {
   FETCH_AND_EXTRACT_TOOL,
+  ROTATE_VPN_TOOL,
   WEB_SEARCH_TOOL,
   isFetchAndExtractArgs,
+  isRotateVpnArgs,
   isWebSearchArgs,
 } from "./types.js";
 import { createConfigResource, createHelpResource } from "./resources.js";
@@ -41,7 +43,7 @@ async function main() {
   );
 
   server.setRequestHandler(ListToolsRequestSchema, async () => {
-    return { tools: [WEB_SEARCH_TOOL, FETCH_AND_EXTRACT_TOOL] };
+    return { tools: [WEB_SEARCH_TOOL, FETCH_AND_EXTRACT_TOOL, ROTATE_VPN_TOOL] };
   });
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
@@ -61,6 +63,12 @@ async function main() {
         include_tables: args.include_tables ?? false,
         use_proxy: args.use_proxy ?? true,
       });
+      return { content: result.content };
+    }
+
+    if (name === "rotate_vpn") {
+      if (!isRotateVpnArgs(args)) throw new Error("Invalid arguments for rotate_vpn");
+      const result = await trafilaturaClient.callTool("rotate_vpn", {});
       return { content: result.content };
     }
 

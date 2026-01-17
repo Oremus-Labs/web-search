@@ -4,6 +4,7 @@ An MCP server that exposes:
 
 - `web_search`: web search via a configurable SearXNG instance (JSON API).
 - `fetch_and_extract`: main-content extraction via a configurable Trafilatura MCP server (Streamable HTTP).
+- `rotate_vpn`: asks Trafilatura to rotate its VPN/proxy egress.
 
 This is designed to be run with `npx` as an MCP server (stdio transport).
 
@@ -73,6 +74,21 @@ Input:
 Output:
 
 - Pass-through of the Trafilatura MCP server tool result (typically a single `text` block containing JSON).
+
+### `rotate_vpn`
+
+Input:
+
+- none
+
+Output:
+
+- Pass-through of the Trafilatura MCP server tool result.
+
+Notes:
+
+- This tool is intentionally exposed through Trafilatura (in-cluster) so you don't need to expose a public REST endpoint for VPN rotation.
+- Rotation is disruptive to in-flight requests; only call it when you’re getting blocked/rate-limited.
 
 ## Local development
 

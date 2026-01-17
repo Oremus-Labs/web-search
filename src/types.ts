@@ -99,3 +99,19 @@ export const FETCH_AND_EXTRACT_TOOL: Tool = {
   },
 };
 
+export type RotateVpnArgs = Record<string, never>;
+
+export function isRotateVpnArgs(args: unknown): args is RotateVpnArgs {
+  return args === undefined || (typeof args === "object" && args !== null);
+}
+
+export const ROTATE_VPN_TOOL: Tool = {
+  name: "rotate_vpn",
+  description:
+    "Requests the Trafilatura service to rotate its VPN/proxy egress (useful when rate-limited).",
+  inputSchema: {
+    type: "object",
+    properties: {},
+    additionalProperties: false,
+  },
+};
