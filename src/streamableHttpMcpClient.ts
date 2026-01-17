@@ -141,7 +141,7 @@ export class StreamableHttpMcpClient {
         params: {
           protocolVersion: "2025-11-25",
           capabilities: {},
-          clientInfo: { name: "web-search-mcp", version: "0.1.0" },
+          clientInfo: { name: "web-search-mcp", version: "0.1.1" },
         },
       };
       const initResp = await this.post(initReq);
@@ -184,4 +184,3 @@ export class StreamableHttpMcpClient {
     return resp.result as ToolCallResult;
   }
 }
-

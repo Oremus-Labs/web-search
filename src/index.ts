@@ -22,7 +22,7 @@ import {
 } from "./types.js";
 import { createConfigResource, createHelpResource } from "./resources.js";
 
-const packageVersion = "0.1.0";
+const packageVersion = "0.1.1";
 
 async function main() {
   const config = loadConfig(process.env);
