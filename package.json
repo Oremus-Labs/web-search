@@ -1,6 +1,6 @@
 {
-  "name": "@oremus-labs/web-search-mcp",
-  "version": "0.1.1",
+  "name": "oremus-web-search",
+  "version": "0.1.2",
   "description": "MCP server that combines SearXNG web search with Trafilatura extraction",
   "license": "MIT",
   "type": "module",
@@ -12,11 +12,8 @@
   "bugs": {
     "url": "https://github.com/Oremus-Labs/web-search-mcp/issues"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "bin": {
-    "web-search-mcp": "dist/index.js"
+    "oremus-web-search": "dist/index.js"
   },
   "main": "dist/index.js",
   "files": [

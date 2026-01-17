@@ -1,4 +1,4 @@
-# web-search-mcp
+# oremus-web-search
 
 An MCP server that exposes:
 
@@ -32,6 +32,16 @@ If you want a pinned version, use the versioned asset under the tag, e.g.:
 npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz
 ```
 
+### Option B: npm (no token required)
+
+Once published to the public npm registry, this should work without any auth:
+
+```bash
+SEARXNG_URL="https://search.oremuslabs.app" \\
+TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
+npx -y oremus-web-search
+```
+
 ### Option B: GitHub Packages
 
 GitHub Packages’ npm registry typically requires authentication (`read:packages`) to install.
@@ -49,7 +59,7 @@ Required environment variables:
 
 Optional environment variables:
 
-- `USER_AGENT` (default: `web-search-mcp`)
+- `USER_AGENT` (default: `oremus-web-search`)
 - `TRAFILATURA_BEARER_TOKEN` (adds `Authorization: Bearer ...` when calling Trafilatura MCP)
 
 ## Tools
@@ -134,11 +144,24 @@ startup_timeout_sec = 30
 tool_timeout_sec = 120
 ```
 
+If you published to npm and want the simplest setup:
+
+```toml
+[mcp_servers.web_search]
+command = "npx"
+args = ["-y", "oremus-web-search"]
+env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "https://trafilatura.oremuslabs.app/mcp" }
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+```
+
 Restart Codex CLI after editing.
 
 ## Use in Claude Code
 
 Add a server entry to your Claude Code MCP config (commonly `.mcp.json` in your project root, or wherever you keep your Claude configuration):
+
+### Option A (Release tarball)
 
 ```json
 {
@@ -149,6 +172,23 @@ Add a server entry to your Claude Code MCP config (commonly `.mcp.json` in your 
         "-y",
         "https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz"
       ],
+      "env": {
+        "SEARXNG_URL": "https://search.oremuslabs.app",
+        "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
+      }
+    }
+  }
+}
+```
+
+### Option B (npm)
+
+```json
+{
+  "mcpServers": {
+    "web-search": {
+      "command": "npx",
+      "args": ["-y", "oremus-web-search"],
       "env": {
         "SEARXNG_URL": "https://search.oremuslabs.app",
         "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"

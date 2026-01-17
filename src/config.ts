@@ -18,7 +18,7 @@ export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
 
   return {
     searxngUrl,
-    searxngUserAgent: (env.USER_AGENT || "web-search-mcp").trim(),
+    searxngUserAgent: (env.USER_AGENT || "oremus-web-search").trim(),
     trafilaturaMcpUrl,
     trafilaturaBearerToken: (env.TRAFILATURA_BEARER_TOKEN || "").trim() || undefined,
   };
@@ -31,4 +31,3 @@ export function normalizeSearxngSearchEndpoint(searxngUrl: string): string {
   }
   return `${trimmed}/search`;
 }
-

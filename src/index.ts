@@ -22,7 +22,7 @@ import {
 } from "./types.js";
 import { createConfigResource, createHelpResource } from "./resources.js";
 
-const packageVersion = "0.1.1";
+const packageVersion = "0.1.2";
 
 async function main() {
   const config = loadConfig(process.env);
@@ -32,7 +32,7 @@ async function main() {
   });
 
   const server = new Server(
-    { name: "@oremus-labs/web-search-mcp", version: packageVersion },
+    { name: "oremus-web-search", version: packageVersion },
     {
       capabilities: {
         logging: {},
@@ -110,7 +110,7 @@ async function main() {
   });
 
   if (process.stdin.isTTY) {
-    console.log(`web-search-mcp v${packageVersion} - Ready`);
+    console.log(`oremus-web-search v${packageVersion} - Ready`);
     console.log(`SearXNG URL: ${config.searxngUrl}`);
     console.log(`Trafilatura MCP URL: ${config.trafilaturaMcpUrl}`);
     console.log("Waiting for MCP client connection via STDIO...\n");
