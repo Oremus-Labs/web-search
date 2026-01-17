@@ -42,7 +42,7 @@ TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
 npx -y oremus-web-search
 ```
 
-### Option B: GitHub Packages
+### Option C: GitHub Packages
 
 GitHub Packages’ npm registry typically requires authentication (`read:packages`) to install.
 

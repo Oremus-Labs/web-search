@@ -14,12 +14,13 @@ export function createConfigResource(config: AppConfig): string {
 }
 
 export function createHelpResource(): string {
-  return `# web-search-mcp
+  return `# oremus-web-search
 
-This MCP server exposes two tools:
+This MCP server exposes tools:
 
 - \`web_search\` → calls the configured SearXNG instance JSON API.
 - \`fetch_and_extract\` → delegates to the configured Trafilatura MCP server (Streamable HTTP).
+- \`rotate_vpn\` → asks Trafilatura to rotate its VPN/proxy egress.
 
 ## Required environment variables
 
@@ -32,4 +33,3 @@ This MCP server exposes two tools:
 - \`TRAFILATURA_BEARER_TOKEN\`: If your Trafilatura MCP endpoint requires Authorization.
 `;
 }
-
