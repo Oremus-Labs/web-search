@@ -22,7 +22,7 @@ import {
 } from "./types.js";
 import { createConfigResource, createHelpResource } from "./resources.js";
 
-const packageVersion = "0.1.3";
+const packageVersion = "0.1.4";
 
 async function main() {
   const config = loadConfig(process.env);
@@ -62,6 +62,15 @@ async function main() {
         include_comments: args.include_comments ?? false,
         include_tables: args.include_tables ?? false,
         use_proxy: args.use_proxy ?? true,
+        max_chars: args.max_chars,
+        start_char: args.start_char,
+        max_fetch_bytes: args.max_fetch_bytes,
+        fetch_timeout_seconds: args.fetch_timeout_seconds,
+        user_agent: args.user_agent,
+        accept_language: args.accept_language,
+        plain_text_fallback: args.plain_text_fallback,
+        rewrite_github_blob_to_raw: args.rewrite_github_blob_to_raw,
+        max_total_seconds: args.max_total_seconds,
       });
       return { content: result.content };
     }

@@ -90,6 +90,13 @@ Input:
 - `include_comments` (boolean, optional)
 - `include_tables` (boolean, optional)
 - `use_proxy` (boolean, optional)
+- `max_chars` (number, optional): cap returned text fields
+- `start_char` (number, optional): paging offset used with `max_chars`
+- `plain_text_fallback` (boolean, optional): if text/plain + extraction is empty, return raw body as text
+- `rewrite_github_blob_to_raw` (boolean, optional): rewrite GitHub `.../blob/...` URLs to `raw.githubusercontent.com/...`
+- `fetch_timeout_seconds` (number, optional): per-attempt HTTP timeout
+- `max_fetch_bytes` (number, optional): cap download size (may truncate HTML)
+- `max_total_seconds` (number, optional): best-effort overall time budget
 
 Output:
 

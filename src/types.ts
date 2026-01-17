@@ -60,6 +60,15 @@ export type FetchAndExtractArgs = {
   include_comments?: boolean;
   include_tables?: boolean;
   use_proxy?: boolean;
+  max_chars?: number;
+  start_char?: number;
+  max_fetch_bytes?: number;
+  fetch_timeout_seconds?: number;
+  user_agent?: string;
+  accept_language?: string;
+  plain_text_fallback?: boolean;
+  rewrite_github_blob_to_raw?: boolean;
+  max_total_seconds?: number;
 };
 
 export function isFetchAndExtractArgs(args: unknown): args is FetchAndExtractArgs {
@@ -93,6 +102,44 @@ export const FETCH_AND_EXTRACT_TOOL: Tool = {
         type: "boolean",
         description: "Whether the Trafilatura service should route via its proxy pool.",
         default: true,
+      },
+      max_chars: {
+        type: "number",
+        description: "Maximum number of characters to return for extracted text fields.",
+      },
+      start_char: {
+        type: "number",
+        description: "Starting character offset for extracted text fields (used with max_chars).",
+      },
+      max_fetch_bytes: {
+        type: "number",
+        description: "Maximum number of bytes to download before extraction (may truncate HTML).",
+      },
+      fetch_timeout_seconds: {
+        type: "number",
+        description: "HTTP fetch timeout in seconds (per attempt).",
+      },
+      user_agent: {
+        type: "string",
+        description: "Override User-Agent header for the upstream fetch.",
+      },
+      accept_language: {
+        type: "string",
+        description: "Optional Accept-Language header for the upstream fetch.",
+      },
+      plain_text_fallback: {
+        type: "boolean",
+        description:
+          "If the upstream is text/plain and extraction is empty, return the raw body as text.",
+      },
+      rewrite_github_blob_to_raw: {
+        type: "boolean",
+        description:
+          "If the URL is a GitHub blob page, rewrite to raw.githubusercontent.com before fetching.",
+      },
+      max_total_seconds: {
+        type: "number",
+        description: "Maximum total time budget in seconds for all attempts (best-effort).",
       },
     },
     required: ["url"],

@@ -141,7 +141,7 @@ export class StreamableHttpMcpClient {
         params: {
           protocolVersion: "2025-11-25",
           capabilities: {},
-          clientInfo: { name: "oremus-web-search", version: "0.1.3" },
+          clientInfo: { name: "oremus-web-search", version: "0.1.4" },
         },
       };
       const initResp = await this.post(initReq);
