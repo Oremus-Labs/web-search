@@ -4,6 +4,17 @@
   "description": "MCP server that combines SearXNG web search with Trafilatura extraction",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Oremus-Labs/web-search-mcp.git"
+  },
+  "homepage": "https://github.com/Oremus-Labs/web-search-mcp",
+  "bugs": {
+    "url": "https://github.com/Oremus-Labs/web-search-mcp/issues"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "bin": {
     "web-search-mcp": "dist/index.js"
   },

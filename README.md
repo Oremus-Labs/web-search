@@ -21,7 +21,7 @@ Example (once published):
 
 ```bash
 SEARXNG_URL="https://search.oremuslabs.app" \\
-TRAFILATURA_MCP_URL="http://searxng-trafilatura-mcp.searxng.svc.cluster.local:8090/mcp" \\
+TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
 npx -y @oremus-labs/web-search-mcp
 ```
 
@@ -103,7 +103,7 @@ Add a server entry to `~/.codex/config.toml`:
 [mcp_servers.web_search]
 command = "npx"
 args = ["-y", "@oremus-labs/web-search-mcp"]
-env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "http://searxng-trafilatura-mcp.searxng.svc.cluster.local:8090/mcp" }
+env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "https://trafilatura.oremuslabs.app/mcp" }
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 ```
@@ -122,7 +122,7 @@ Add a server entry to your Claude Code MCP config (commonly `.mcp.json` in your 
       "args": ["-y", "@oremus-labs/web-search-mcp"],
       "env": {
         "SEARXNG_URL": "https://search.oremuslabs.app",
-        "TRAFILATURA_MCP_URL": "http://searxng-trafilatura-mcp.searxng.svc.cluster.local:8090/mcp"
+        "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
       }
     }
   }
