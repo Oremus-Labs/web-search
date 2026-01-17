@@ -16,15 +16,19 @@ This is designed to be run with `npx` as an MCP server (stdio transport).
 
 ## Install / Run
 
-This package is intended to be published to a registry (GitHub Packages or npm).
+### Option A (recommended): no-token install via GitHub Release tarball
 
-Example (once published):
+This avoids GitHub Packages auth requirements and “just works” with `npx`:
 
 ```bash
 SEARXNG_URL="https://search.oremuslabs.app" \\
 TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
-npx -y @oremus-labs/web-search-mcp
+npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz
 ```
+
+### Option B: GitHub Packages
+
+GitHub Packages’ npm registry typically requires authentication (`read:packages`) to install.
 
 ## Configuration
 
@@ -118,7 +122,7 @@ Add a server entry to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.web_search]
 command = "npx"
-args = ["-y", "@oremus-labs/web-search-mcp"]
+args = ["-y", "https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz"]
 env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "https://trafilatura.oremuslabs.app/mcp" }
 startup_timeout_sec = 30
 tool_timeout_sec = 120
@@ -135,7 +139,10 @@ Add a server entry to your Claude Code MCP config (commonly `.mcp.json` in your 
   "mcpServers": {
     "web-search": {
       "command": "npx",
-      "args": ["-y", "@oremus-labs/web-search-mcp"],
+      "args": [
+        "-y",
+        "https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz"
+      ],
       "env": {
         "SEARXNG_URL": "https://search.oremuslabs.app",
         "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
