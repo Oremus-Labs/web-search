@@ -23,6 +23,18 @@ type ToolCallResult = {
   isError?: boolean;
 };
 
+class McpHttpError extends Error {
+  readonly status: number;
+  readonly body: string;
+
+  constructor(status: number, body: string) {
+    super(`MCP HTTP ${status}: ${body.slice(0, 500)}`);
+    this.name = "McpHttpError";
+    this.status = status;
+    this.body = body;
+  }
+}
+
 function contentTypeBase(value: string | null): string {
   if (!value) return "";
   return value.split(";")[0]?.trim().toLowerCase() ?? "";
@@ -70,6 +82,12 @@ export class StreamableHttpMcpClient {
     this.authorization = options.bearerToken ? `Bearer ${options.bearerToken}` : undefined;
   }
 
+  private resetSession(): void {
+    this.sessionId = undefined;
+    this.protocolVersion = undefined;
+    this.initializing = undefined;
+  }
+
   private headers(extra?: Record<string, string>): Record<string, string> {
     const headers: Record<string, string> = {
       Accept: "application/json, text/event-stream",
@@ -96,7 +114,7 @@ export class StreamableHttpMcpClient {
 
     if (resp.status >= 400) {
       const body = await resp.text().catch(() => "");
-      throw new Error(`MCP HTTP ${resp.status}: ${body.slice(0, 500)}`);
+      throw new McpHttpError(resp.status, body);
     }
 
     // Notifications often return 202 with no body.
@@ -139,9 +157,9 @@ export class StreamableHttpMcpClient {
         id: initId,
         method: "initialize",
         params: {
-          protocolVersion: "2025-11-25",
+          protocolVersion: "2025-03-26",
           capabilities: {},
-          clientInfo: { name: "oremus-web-search", version: "0.1.4" },
+          clientInfo: { name: "oremus-web-search", version: "0.1.5" },
         },
       };
       const initResp = await this.post(initReq);
@@ -166,21 +184,37 @@ export class StreamableHttpMcpClient {
   }
 
   async callTool(name: string, args: Record<string, unknown>): Promise<ToolCallResult> {
-    await this.ensureInitialized();
+    const attemptCall = async (): Promise<ToolCallResult> => {
+      await this.ensureInitialized();
 
-    const id = this.nextId++;
-    const req: JsonRpcRequest = {
-      jsonrpc: "2.0",
-      id,
-      method: "tools/call",
-      params: {
-        name,
-        arguments: args,
-      },
+      const id = this.nextId++;
+      const req: JsonRpcRequest = {
+        jsonrpc: "2.0",
+        id,
+        method: "tools/call",
+        params: {
+          name,
+          arguments: args,
+        },
+      };
+      const resp = await this.post(req);
+      if (!resp) throw new Error("tools/call returned no response");
+      if (resp.error) throw new Error(`tools/call error: ${resp.error.message}`);
+      return resp.result as ToolCallResult;
     };
-    const resp = await this.post(req);
-    if (!resp) throw new Error("tools/call returned no response");
-    if (resp.error) throw new Error(`tools/call error: ${resp.error.message}`);
-    return resp.result as ToolCallResult;
+
+    try {
+      return await attemptCall();
+    } catch (err) {
+      if (
+        err instanceof McpHttpError &&
+        err.status === 400 &&
+        /no valid session id/i.test(err.body)
+      ) {
+        this.resetSession();
+        return await attemptCall();
+      }
+      throw err;
+    }
   }
 }

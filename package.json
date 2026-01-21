@@ -1,6 +1,6 @@
 {
   "name": "oremus-web-search",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "MCP server that combines SearXNG web search with Trafilatura extraction",
   "license": "MIT",
   "type": "module",
