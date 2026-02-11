@@ -1,6 +1,6 @@
 {
   "name": "oremus-web-search",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "MCP server that combines SearXNG web search with Trafilatura extraction",
   "license": "MIT",
   "type": "module",
@@ -30,7 +30,8 @@
     "dev": "tsx src/index.ts",
     "inspector": "npx @modelcontextprotocol/inspector node dist/index.js",
     "prepack": "npm run clean && npm run build",
-    "smoke": "tsx scripts/smoke.ts"
+    "smoke": "tsx scripts/smoke.ts",
+    "smoke:session": "tsx scripts/smoke-session-recovery.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.25.2"

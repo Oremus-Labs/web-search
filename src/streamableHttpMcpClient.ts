@@ -35,6 +35,19 @@ class McpHttpError extends Error {
   }
 }
 
+function isRecoverableSessionError(err: unknown): err is McpHttpError {
+  if (!(err instanceof McpHttpError)) return false;
+
+  const body = err.body.toLowerCase();
+  if (err.status === 400) {
+    return /no valid session id|missing session id/.test(body);
+  }
+  if (err.status === 404) {
+    return /session not found/.test(body);
+  }
+  return false;
+}
+
 function contentTypeBase(value: string | null): string {
   if (!value) return "";
   return value.split(";")[0]?.trim().toLowerCase() ?? "";
@@ -159,7 +172,7 @@ export class StreamableHttpMcpClient {
         params: {
           protocolVersion: "2025-03-26",
           capabilities: {},
-          clientInfo: { name: "oremus-web-search", version: "0.1.5" },
+          clientInfo: { name: "oremus-web-search", version: "0.1.6" },
         },
       };
       const initResp = await this.post(initReq);
@@ -206,11 +219,7 @@ export class StreamableHttpMcpClient {
     try {
       return await attemptCall();
     } catch (err) {
-      if (
-        err instanceof McpHttpError &&
-        err.status === 400 &&
-        /no valid session id/i.test(err.body)
-      ) {
+      if (isRecoverableSessionError(err)) {
         this.resetSession();
         return await attemptCall();
       }

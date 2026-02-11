@@ -8,6 +8,10 @@ An MCP server that exposes:
 
 This is designed to be run with `npx` as an MCP server (stdio transport).
 
+## Session resilience
+
+`fetch_and_extract` automatically re-initializes the upstream Trafilatura MCP session and retries once when it receives common stale-session errors (`400 missing/no valid session id` or `404 session not found`).
+
 ## Client setup (Codex / Claude / others)
 
 - Codex CLI: see “Use in Codex CLI” below.
@@ -46,7 +50,7 @@ Once published to the public npm registry, this should work without any auth:
 ```bash
 SEARXNG_URL="https://search.oremuslabs.app" \\
 TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
-npx -y oremus-web-search
+npx -y oremus-web-search@0.1.6
 ```
 
 ### Option C: GitHub Packages
@@ -130,6 +134,7 @@ Notes:
 cd web-search-mcp
 npm install
 npm run build
+npm run smoke:session
 SEARXNG_URL="http://127.0.0.1:18080" TRAFILATURA_MCP_URL="http://127.0.0.1:18090/mcp" npm run inspector
 ```
 
@@ -163,7 +168,7 @@ If you published to npm and want the simplest setup:
 ```toml
 [mcp_servers.web_search]
 command = "npx"
-args = ["-y", "oremus-web-search"]
+args = ["-y", "oremus-web-search@0.1.6"]
 env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "https://trafilatura.oremuslabs.app/mcp" }
 startup_timeout_sec = 30
 tool_timeout_sec = 120
@@ -199,13 +204,13 @@ Add a server entry to your Claude Code MCP config (commonly `.mcp.json` in your 
 
 ```json
 {
-  "mcpServers": {
-    "web-search": {
-      "command": "npx",
-      "args": ["-y", "oremus-web-search"],
-      "env": {
-        "SEARXNG_URL": "https://search.oremuslabs.app",
-        "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
+    "mcpServers": {
+      "web-search": {
+        "command": "npx",
+        "args": ["-y", "oremus-web-search@0.1.6"],
+        "env": {
+          "SEARXNG_URL": "https://search.oremuslabs.app",
+          "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
       }
     }
   }
