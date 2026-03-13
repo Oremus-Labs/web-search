@@ -1,15 +1,9 @@
-# Copilot Instructions: Web Search (oremus-web-search)
+# Copilot Instructions: Web Search CLI
 
-When you need external context (docs/specs/repos), use the `oremus-web-search` MCP server tools:
+When you need external context, use the `web-search` CLI:
 
-- `web_search` to find relevant URLs.
-- `fetch_and_extract` to extract clean main text.
-- `rotate_vpn` if blocked/rate-limited (429/403/captcha-like behavior).
+- `web-search search "<query>" --json`
+- `web-search extract "<url>" --json`
+- `web-search rotate --json` if blocked or rate-limited
 
-Extraction tips:
-
-- Keep results bounded using `max_chars` and page with `start_char`.
-- Prefer GitHub repo root pages over `.../blob/...` URLs.
-- If you have a GitHub blob URL, set `rewrite_github_blob_to_raw=true`.
-- For `text/plain` sources (raw READMEs, changelogs), set `plain_text_fallback=true`.
-
+Prefer official docs, specifications, and repo root pages. Use `--max-chars` and `--start-char` to page through long documents deterministically.

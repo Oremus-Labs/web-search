@@ -1,7 +1,9 @@
 # Gemini CLI setup
 
-Gemini CLI MCP support varies by environment.
+Run the CLI directly:
 
-- If supported, configure an MCP server named `web-search` to run `npx -y oremus-web-search` with `SEARXNG_URL` + `TRAFILATURA_MCP_URL`.
-- Otherwise, use `GEMINI.md` as instruction text you can paste into your custom instructions.
+```bash
+web-search search "example domain" --json
+```
 
+Set `WEB_SEARCH_API_URL` if you need to point at a local port-forward or non-default deployment.

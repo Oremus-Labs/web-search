@@ -1,7 +1,7 @@
 {
   "name": "oremus-web-search",
   "version": "0.1.6",
-  "description": "MCP server that combines SearXNG web search with Trafilatura extraction",
+  "description": "CLI for Oremus web search, extraction, and VPN rotation over the REST API",
   "license": "MIT",
   "type": "module",
   "repository": {
@@ -13,7 +13,8 @@
     "url": "https://github.com/Oremus-Labs/web-search-mcp/issues"
   },
   "bin": {
-    "oremus-web-search": "dist/index.js"
+    "oremus-web-search": "dist/index.js",
+    "web-search": "dist/index.js"
   },
   "main": "dist/index.js",
   "files": [
@@ -28,14 +29,11 @@
     "build": "tsc && shx chmod +x dist/*.js",
     "clean": "shx rm -rf dist",
     "dev": "tsx src/index.ts",
-    "inspector": "npx @modelcontextprotocol/inspector node dist/index.js",
     "prepack": "npm run clean && npm run build",
-    "smoke": "tsx scripts/smoke.ts",
-    "smoke:session": "tsx scripts/smoke-session-recovery.ts"
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "smoke": "tsx scripts/smoke.ts"
   },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "1.25.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.17.2",
     "shx": "^0.4.0",

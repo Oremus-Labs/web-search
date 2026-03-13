@@ -1,223 +1,105 @@
 # oremus-web-search
 
-An MCP server that exposes:
+`web-search` is the preferred Unix-style CLI for the Oremus web search REST API.
+The package name remains `oremus-web-search`.
 
-- `web_search`: web search via a configurable SearXNG instance (JSON API).
-- `fetch_and_extract`: main-content extraction via a configurable Trafilatura MCP server (Streamable HTTP).
-- `rotate_vpn`: asks Trafilatura to rotate its VPN/proxy egress.
+It talks to:
+- `https://web-search.oremuslabs.app` for API requests
+- `https://search.oremuslabs.app` indirectly through the API for SearXNG-backed search
 
-This is designed to be run with `npx` as an MCP server (stdio transport).
+The CLI exposes three commands:
+- `search` for SearXNG-backed web results
+- `extract` for Trafilatura-backed page extraction
+- `rotate` for manual VPN/proxy rotation
 
-## Session resilience
+## Install
 
-`fetch_and_extract` automatically re-initializes the upstream Trafilatura MCP session and retries once when it receives common stale-session errors (`400 missing/no valid session id` or `404 session not found`).
-
-## Client setup (Codex / Claude / others)
-
-- Codex CLI: see “Use in Codex CLI” below.
-- Claude Code: see `web-search-mcp/CLAUDE.md:1` or copy `web-search-mcp/.mcp.json.example:1` to your project as `.mcp.json`.
-- Copilot instructions: see `web-search-mcp/.github/copilot-instructions.md:1`.
-- Gemini instructions: see `web-search-mcp/GEMINI.md:1`.
-
-## Why this exists
-
-- SearXNG is great for finding URLs.
-- Trafilatura is great at extracting clean article text and metadata.
-- This server provides a single MCP endpoint that combines both.
-
-## Install / Run
-
-### Option A (recommended): no-token install via GitHub Release tarball
-
-This avoids GitHub Packages auth requirements and “just works” with `npx`:
+### GitHub Release tarball
 
 ```bash
-SEARXNG_URL="https://search.oremuslabs.app" \\
-TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
-npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz
+npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz search "vatican"
 ```
 
-If you want a pinned version, use the versioned asset under the tag, e.g.:
+### npm
 
 ```bash
-npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/download/v0.1.1/oremus-labs-web-search-mcp-0.1.1.tgz
+npx -y oremus-web-search@0.1.6 search "vatican"
 ```
-
-### Option B: npm (no token required)
-
-Once published to the public npm registry, this should work without any auth:
-
-```bash
-SEARXNG_URL="https://search.oremuslabs.app" \\
-TRAFILATURA_MCP_URL="https://trafilatura.oremuslabs.app/mcp" \\
-npx -y oremus-web-search@0.1.6
-```
-
-### Option C: GitHub Packages
-
-GitHub Packages’ npm registry typically requires authentication (`read:packages`) to install.
 
 ## Configuration
 
-Required environment variables:
-
-- `SEARXNG_URL`
-  - Base URL for your SearXNG instance.
-  - The server calls `${SEARXNG_URL}/search?format=json&...`.
-  - You may also set `SEARXNG_URL` to the full `/search` endpoint.
-- `TRAFILATURA_MCP_URL`
-  - Full MCP endpoint URL for Trafilatura (must include the MCP path), e.g. `http://...:8090/mcp`.
-
 Optional environment variables:
 
-- `USER_AGENT` (default: `oremus-web-search`)
-- `TRAFILATURA_BEARER_TOKEN` (adds `Authorization: Bearer ...` when calling Trafilatura MCP)
+- `WEB_SEARCH_API_URL`
+  - Defaults to `https://web-search.oremuslabs.app`
+- `USER_AGENT`
+  - Preferred command: `web-search`
+  - Also available as `oremus-web-search`
 
-## Tools
+## Commands
 
-### `web_search`
+### `search`
 
-Input (matches the common SearXNG MCP shape):
+```bash
+web-search search "vatican" --json
+web-search search "site:docs.python.org asyncio" --language en --time-range year
+```
 
-- `query` (string, required)
-- `pageno` (number, optional)
-- `time_range` (`day|month|year`, optional)
-- `language` (string, optional)
-- `safesearch` (`0|1|2`, optional)
+Flags:
+- `--json`
+- `--pageno <n>`
+- `--time-range day|month|year`
+- `--language <code>`
+- `--safesearch 0|1|2`
 
-Output:
+### `extract`
 
-- A single `text` block formatted as:
-  - `Title: ...`
-  - `Description: ...`
-  - `URL: ...`
-  - `Relevance Score: ...`
+```bash
+web-search extract "https://example.com/article" --json
+web-search extract "https://github.com/org/repo/blob/main/README.md" --max-chars 4000 --start-char 0
+```
 
-### `fetch_and_extract`
+Flags:
+- `--json`
+- `--include-comments`
+- `--include-tables`
+- `--no-proxy`
+- `--max-chars <n>`
+- `--start-char <n>`
+- `--max-fetch-bytes <n>`
+- `--fetch-timeout-seconds <n>`
+- `--user-agent <value>`
+- `--accept-language <value>`
+- `--plain-text-fallback`
+- `--no-rewrite-github-blob-to-raw`
+- `--max-total-seconds <n>`
 
-Input:
+### `rotate`
 
-- `url` (string, required)
-- `include_comments` (boolean, optional)
-- `include_tables` (boolean, optional)
-- `use_proxy` (boolean, optional)
-- `max_chars` (number, optional): cap returned text fields
-- `start_char` (number, optional): paging offset used with `max_chars`
-- `plain_text_fallback` (boolean, optional): if text/plain + extraction is empty, return raw body as text
-- `rewrite_github_blob_to_raw` (boolean, optional): rewrite GitHub `.../blob/...` URLs to `raw.githubusercontent.com/...`
-- `fetch_timeout_seconds` (number, optional): per-attempt HTTP timeout
-- `max_fetch_bytes` (number, optional): cap download size (may truncate HTML)
-- `max_total_seconds` (number, optional): best-effort overall time budget
-
-Output:
-
-- Pass-through of the Trafilatura MCP server tool result (typically a single `text` block containing JSON).
-
-### `rotate_vpn`
-
-Input:
-
-- none
-
-Output:
-
-- Pass-through of the Trafilatura MCP server tool result.
-
-Notes:
-
-- This tool is intentionally exposed through Trafilatura (in-cluster) so you don't need to expose a public REST endpoint for VPN rotation.
-- Rotation is disruptive to in-flight requests; only call it when you’re getting blocked/rate-limited.
+```bash
+web-search rotate --json
+```
 
 ## Local development
 
 ```bash
 cd web-search-mcp
 npm install
+npm test
 npm run build
-npm run smoke:session
-SEARXNG_URL="http://127.0.0.1:18080" TRAFILATURA_MCP_URL="http://127.0.0.1:18090/mcp" npm run inspector
+WEB_SEARCH_API_URL="http://127.0.0.1:18090" npm run smoke
 ```
 
-## Kubernetes access (typical)
+## Local cluster access
 
-If your Trafilatura MCP server is only exposed as an in-cluster Service, run it through a port-forward:
+Port-forward the in-cluster API if you do not want to use the public hostname:
 
 ```bash
-kubectl -n searxng port-forward svc/searxng-trafilatura-mcp 18090:8090
-```
-
-Then set:
-
-- `TRAFILATURA_MCP_URL=http://127.0.0.1:18090/mcp`
-
-## Use in Codex CLI
-
-Add a server entry to `~/.codex/config.toml`:
-
-```toml
-[mcp_servers.web_search]
-command = "npx"
-args = ["-y", "https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz"]
-env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "https://trafilatura.oremuslabs.app/mcp" }
-startup_timeout_sec = 30
-tool_timeout_sec = 120
-```
-
-If you published to npm and want the simplest setup:
-
-```toml
-[mcp_servers.web_search]
-command = "npx"
-args = ["-y", "oremus-web-search@0.1.6"]
-env = { "SEARXNG_URL" = "https://search.oremuslabs.app", "TRAFILATURA_MCP_URL" = "https://trafilatura.oremuslabs.app/mcp" }
-startup_timeout_sec = 30
-tool_timeout_sec = 120
-```
-
-Restart Codex CLI after editing.
-
-## Use in Claude Code
-
-Add a server entry to your Claude Code MCP config (commonly `.mcp.json` in your project root, or wherever you keep your Claude configuration):
-
-### Option A (Release tarball)
-
-```json
-{
-  "mcpServers": {
-    "web-search": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz"
-      ],
-      "env": {
-        "SEARXNG_URL": "https://search.oremuslabs.app",
-        "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
-      }
-    }
-  }
-}
-```
-
-### Option B (npm)
-
-```json
-{
-    "mcpServers": {
-      "web-search": {
-        "command": "npx",
-        "args": ["-y", "oremus-web-search@0.1.6"],
-        "env": {
-          "SEARXNG_URL": "https://search.oremuslabs.app",
-          "TRAFILATURA_MCP_URL": "https://trafilatura.oremuslabs.app/mcp"
-      }
-    }
-  }
-}
+kubectl -n searxng port-forward svc/searxng-web-search-api 18090:8090
+WEB_SEARCH_API_URL="http://127.0.0.1:18090" web-search search "example domain"
 ```
 
 ## Notes
 
-- This server uses stdio transport (default) so it works with MCP clients that launch subprocesses.
-- Trafilatura is called through its MCP Streamable HTTP endpoint; this repo’s Kubernetes deployment exposes it as `svc/searxng-trafilatura-mcp` in namespace `searxng`.
+- This repo no longer provides an MCP server.
+- The Kubernetes-side MCP endpoint and MCP session recovery logic were replaced by a plain REST API.

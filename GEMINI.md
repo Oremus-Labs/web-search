@@ -1,17 +1,13 @@
-# Gemini CLI / Gemini Code Assist: Web Search (oremus-web-search)
+# Gemini CLI / Gemini Code Assist: Web Search CLI
 
-If your Gemini environment supports launching MCP servers (stdio) and calling tools, configure and use:
+When you need current web information:
 
-- `web_search` for discovery (returns formatted text results).
-- `fetch_and_extract` for clean extraction (returns JSON as a text blob).
-- `rotate_vpn` when blocked/rate-limited.
+- run `web-search search "<query>" --json` for discovery
+- run `web-search extract "<url>" --json` for clean page extraction
+- run `web-search rotate --json` if requests are being blocked
 
-## Recommended usage patterns
+If you are using a non-default API endpoint:
 
-- Prefer official docs/specs and GitHub repo root pages.
-- Use `max_chars` + `start_char` to page through long pages deterministically.
-- Use `rewrite_github_blob_to_raw=true` for GitHub `.../blob/...` links.
-- Use `plain_text_fallback=true` for raw text endpoints.
-
-If Gemini CLI doesn’t support MCP directly, copy/paste these rules into your “custom instructions” so the agent consistently uses the MCP server when it’s available.
-
+```bash
+export WEB_SEARCH_API_URL="https://web-search.oremuslabs.app"
+```
