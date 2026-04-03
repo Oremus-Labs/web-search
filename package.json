@@ -1,6 +1,6 @@
 {
   "name": "@oremus-labs/web-search",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "CLI for web search, extraction, and proxy rotation over a REST API",
   "license": "MIT",
   "type": "module",
