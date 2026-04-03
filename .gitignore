@@ -1,9 +1,9 @@
 dist/
 node_modules/
+.worktrees/
 .env
 .env.*
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
