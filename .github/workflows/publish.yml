@@ -28,17 +28,14 @@ jobs:
 
       - name: Pack tarball (no-token install)
         run: |
-          npm pack --silent
-          TARBALL="$(ls -1 *.tgz | head -n 1)"
-          mv "$TARBALL" oremus-web-search.tgz
-          cp oremus-web-search.tgz web-search-mcp.tgz
+          TARBALL="$(npm pack --silent)"
+          mv "$TARBALL" web-search.tgz
 
       - name: Create GitHub Release + upload tarball
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            oremus-web-search.tgz
-            web-search-mcp.tgz
+            web-search.tgz
           generate_release_notes: true
 
       - name: Publish

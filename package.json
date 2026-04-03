@@ -1,19 +1,18 @@
 {
-  "name": "oremus-web-search",
+  "name": "@oremus-labs/web-search",
   "version": "0.1.6",
-  "description": "CLI for Oremus web search, extraction, and VPN rotation over the REST API",
+  "description": "CLI for web search, extraction, and proxy rotation over a REST API",
   "license": "MIT",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Oremus-Labs/web-search-mcp.git"
+    "url": "git+ssh://git@github.com/Oremus-Labs/web-search.git"
   },
-  "homepage": "https://github.com/Oremus-Labs/web-search-mcp",
+  "homepage": "https://github.com/Oremus-Labs/web-search",
   "bugs": {
-    "url": "https://github.com/Oremus-Labs/web-search-mcp/issues"
+    "url": "https://github.com/Oremus-Labs/web-search/issues"
   },
   "bin": {
-    "oremus-web-search": "dist/index.js",
     "web-search": "dist/index.js"
   },
   "main": "dist/index.js",
@@ -33,11 +32,13 @@
     "test": "node --import tsx --test test/**/*.test.ts",
     "smoke": "tsx scripts/smoke.ts"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.17.2",
     "shx": "^0.4.0",
     "tsx": "^4.20.5",
     "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

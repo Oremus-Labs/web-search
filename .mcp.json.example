@@ -1,8 +1,8 @@
 {
-  "note": "This repo no longer ships an MCP server. Use the oremus-web-search CLI instead.",
+  "note": "This repo no longer ships an MCP server. Use the web-search CLI instead.",
   "example": {
     "command": "npx",
-    "args": ["-y", "oremus-web-search@0.1.6", "search", "example domain"],
+    "args": ["-y", "@oremus-labs/web-search", "search", "example domain"],
     "env": {
       "WEB_SEARCH_API_URL": "https://web-search.oremuslabs.app"
     }

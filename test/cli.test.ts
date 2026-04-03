@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
 import { loadConfig } from "../src/config.js";
 import { formatExtractText, runCli } from "../src/cli.js";
@@ -8,7 +9,25 @@ test("loadConfig defaults to the public REST API", () => {
   const config = loadConfig({});
 
   assert.equal(config.apiBaseUrl, "https://web-search.oremuslabs.app");
-  assert.equal(config.userAgent, "oremus-web-search");
+  assert.equal(config.userAgent, "web-search");
+});
+
+test("package metadata uses the renamed scoped package identity", () => {
+  const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as {
+    name: string;
+    repository: { url: string };
+    homepage: string;
+    bugs: { url: string };
+    publishConfig: { access: string };
+    bin: Record<string, string>;
+  };
+
+  assert.equal(pkg.name, "@oremus-labs/web-search");
+  assert.equal(pkg.repository.url, "git+ssh://git@github.com/Oremus-Labs/web-search.git");
+  assert.equal(pkg.homepage, "https://github.com/Oremus-Labs/web-search");
+  assert.equal(pkg.bugs.url, "https://github.com/Oremus-Labs/web-search/issues");
+  assert.equal(pkg.publishConfig.access, "public");
+  assert.deepEqual(pkg.bin, { "web-search": "dist/index.js" });
 });
 
 test("runCli search uses the REST API and prints normalized JSON", async () => {

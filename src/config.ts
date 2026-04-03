@@ -6,7 +6,7 @@ export type AppConfig = {
 export function loadConfig(env: NodeJS.ProcessEnv): AppConfig {
   return {
     apiBaseUrl: normalizeApiBaseUrl((env.WEB_SEARCH_API_URL || "https://web-search.oremuslabs.app").trim()),
-    userAgent: (env.USER_AGENT || "oremus-web-search").trim(),
+    userAgent: (env.USER_AGENT || "web-search").trim(),
   };
 }
 

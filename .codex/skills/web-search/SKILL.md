@@ -1,13 +1,13 @@
 ---
 name: web-search
-description: "Web research skill powered by the `oremus-web-search` MCP server (SearXNG search + Trafilatura extraction + VPN rotation)."
-compatibility: "Requires MCP server exposing tools: web_search, fetch_and_extract, rotate_vpn."
+description: "Web research skill powered by the `web-search` CLI and hosted REST API (SearXNG search + Trafilatura extraction + proxy rotation)."
+compatibility: "Requires access to the web-search REST API for search, extraction, and proxy rotation."
 metadata:
   author: "Oremus-Labs"
   version: "0.1.0"
 ---
 
-# Web Search Skill (oremus-web-search)
+# Web Search Skill
 
 ## What this skill is for
 Use this skill when you need to:
@@ -90,4 +90,3 @@ Only rotate when needed; it can disrupt in-flight requests.
 
 ### API reference (keep it bounded)
 `fetch_and_extract({ "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise", "max_chars": 4000, "include_tables": false, "use_proxy": true })`
-

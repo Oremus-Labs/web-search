@@ -1,7 +1,6 @@
-# oremus-web-search
+# web-search
 
-`web-search` is the preferred Unix-style CLI for the Oremus web search REST API.
-The package name remains `oremus-web-search`.
+`web-search` is a Unix-style CLI for web search, extraction, and proxy rotation over the hosted REST API.
 
 It talks to:
 - `https://web-search.oremuslabs.app` for API requests
@@ -17,13 +16,13 @@ The CLI exposes three commands:
 ### GitHub Release tarball
 
 ```bash
-npx -y https://github.com/Oremus-Labs/web-search-mcp/releases/latest/download/web-search-mcp.tgz search "vatican"
+npx -y https://github.com/Oremus-Labs/web-search/releases/latest/download/web-search.tgz search "vatican"
 ```
 
 ### npm
 
 ```bash
-npx -y oremus-web-search@0.1.6 search "vatican"
+npx -y @oremus-labs/web-search search "vatican"
 ```
 
 ## Configuration
@@ -34,7 +33,6 @@ Optional environment variables:
   - Defaults to `https://web-search.oremuslabs.app`
 - `USER_AGENT`
   - Preferred command: `web-search`
-  - Also available as `oremus-web-search`
 
 ## Commands
 
@@ -83,7 +81,7 @@ web-search rotate --json
 ## Local development
 
 ```bash
-cd web-search-mcp
+cd web-search
 npm install
 npm test
 npm run build
